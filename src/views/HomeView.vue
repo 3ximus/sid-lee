@@ -1,19 +1,22 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { onBeforeMount } from "vue";
+import { ref, onBeforeMount } from "vue";
 import IntroView from "./IntroView.vue";
 import PassionComponent from "../components/PassionComponent.vue";
+import ResumeComponent from "../components/ResumeComponent.vue";
 
-const MOVEMENT_ATTENUATION = 0.25;
+const MOVEMENT_ATTENUATION = 0.7;
 
 const fullWidth = window.innerWidth;
 const fullHeight = window.innerHeight;
 
-const xOffset = (val) =>
-  document.body.style.setProperty(
-    "--x-offset",
-    `${(val * MOVEMENT_ATTENUATION).toFixed(0)}px`,
-  );
+let xOffsetVal = ref(0);
+
+const xOffset = (val) => {
+  const value = (val * MOVEMENT_ATTENUATION).toFixed(0);
+  xOffsetVal.value = val;
+  return document.body.style.setProperty("--x-offset", `${value}px`);
+};
 
 const OnMouseMove = (event) => {
   xOffset(-event.clientX + fullWidth / 2);
@@ -46,7 +49,13 @@ onBeforeMount(() => {
     <h1 class="tag resume">RESUME</h1>
     <h1 class="tag passions">PASSIONS</h1>
 
-    <PassionComponent />
+    <transition name="fade">
+      <PassionComponent v-if="xOffsetVal < -400" />
+    </transition>
+
+    <transition name="fade">
+      <ResumeComponent v-if="xOffsetVal > 100" />
+    </transition>
 
     <footer>
       <h1 class="footer">Move mouse to either side</h1>
@@ -78,14 +87,14 @@ onBeforeMount(() => {
   position: absolute;
   bottom: 0;
   left: 50px;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 
 .background {
-  width: calc(100vw + 800px);
+  width: calc(100vw + 1200px);
   height: 100vh;
-  position: relative;
-  left: calc(-400px + var(--x-offset));
+  position: absolute;
+  left: clamp(-1000px, calc(-600px + var(--x-offset)), -200px);
 }
 .left,
 .right {
@@ -121,7 +130,7 @@ onBeforeMount(() => {
 }
 .sign {
   padding-left: 5%;
-  width: 55%;
+  width: 45vw;
   position: relative;
   top: 13%;
 }
