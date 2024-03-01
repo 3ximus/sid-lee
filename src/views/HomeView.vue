@@ -1,29 +1,52 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { onBeforeMount } from "vue";
+
+const MOVEMENT_ATTENUATION = 0.25;
+
+const fullWidth = window.innerWidth;
+const fullHeight = window.innerHeight;
+
+const xOffset = (val) =>
+  document.body.style.setProperty(
+    "--x-offset",
+    `${(val * MOVEMENT_ATTENUATION).toFixed(0)}px`,
+  );
+
+const OnMouseMove = (event) => {
+  xOffset(-event.clientX + fullWidth / 2);
+};
+
+// Link event
+document.body.addEventListener("mousemove", OnMouseMove);
+
+// Lifecycle Events
+onBeforeMount(() => {
+  xOffset(0);
+});
 </script>
 
 <template>
   <main>
     <div class="background">
-      <RouterLink to="/resume">
-        <div class="left">
-          <div class="inner">
-            <img class="sign" src="/resume.webp" alt="" />
-          </div>
+      <div class="left">
+        <div class="inner">
+          <img class="sign" src="/resume.webp" alt="" />
         </div>
-      </RouterLink>
-      <RouterLink to="/passions">
-        <div class="right">
-          <div class="inner">
-            <img class="sign" src="/passion.webp" alt="" />
-          </div>
+      </div>
+      <div class="right">
+        <div class="inner">
+          <img class="sign" src="/passion.webp" alt="" />
         </div>
-      </RouterLink>
+      </div>
     </div>
 
-    <header class="title">
-      <h1>Hello Sid Lee!</h1>
-    </header>
+    <h1 class="tag resume">RESUME</h1>
+    <h1 class="tag passions">PASSIONS</h1>
+
+    <footer>
+      <h1 class="footer">Move mouse to either side</h1>
+    </footer>
 
     <div class="vignette"></div>
   </main>
@@ -42,15 +65,24 @@ import { RouterLink } from "vue-router";
 .title {
   position: absolute;
   top: 0;
-  width: 100%;
-  transform: translateY(-50%, 0%);
+  width: 100vw;
+  text-align: center;
+  font-size: 2rem;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 50px;
+  font-size: 1.5rem;
+  /* text-align: center; */
+  /* width: 100vw; */
 }
 
 .background {
-  width: 120vw;
+  width: calc(100vw + 800px);
   height: 100vh;
   position: relative;
-  left: -10vw;
+  left: calc(-400px + var(--x-offset));
 }
 .left,
 .right {
@@ -85,14 +117,31 @@ import { RouterLink } from "vue-router";
   margin-left: -12%;
 }
 .sign {
-  width: 70vh;
+  padding-left: 5%;
+  width: 55%;
   position: relative;
-  top: 17%;
+  top: 13%;
 }
 .right .inner .sign {
   left: -16%;
 }
 .left .inner .sign {
   left: 60%;
+}
+
+.tag {
+  top: 45%;
+  position: fixed;
+  font-size: 80px;
+}
+.tag.passions {
+  right: -130px;
+  color: white;
+  transform: rotate(90deg);
+}
+.tag.resume {
+  left: -110px;
+  color: black;
+  transform: rotate(-90deg);
 }
 </style>
