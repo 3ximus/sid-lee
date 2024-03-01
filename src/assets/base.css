@@ -19,7 +19,13 @@ body {
   min-height: 100vh;
   height: 100%;
   overflow: hidden;
-  background-color: black;
+  background: linear-gradient(
+    to right,
+    #bad4aa 0%,
+    #bad4aa 50%,
+    #260d04 50%,
+    #260d04 100%
+  );
   transition:
     color 0.5s,
     background-color 0.5s;

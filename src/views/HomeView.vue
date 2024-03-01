@@ -5,7 +5,7 @@ import IntroView from "./IntroView.vue";
 import PassionComponent from "../components/PassionComponent.vue";
 import ResumeComponent from "../components/ResumeComponent.vue";
 
-const MOVEMENT_ATTENUATION = 0.7;
+const MOVEMENT_ATTENUATION = 0.04;
 
 const fullWidth = window.innerWidth;
 const fullHeight = window.innerHeight;
@@ -15,7 +15,7 @@ let xOffsetVal = ref(0);
 const xOffset = (val) => {
   const value = (val * MOVEMENT_ATTENUATION).toFixed(0);
   xOffsetVal.value = val;
-  return document.body.style.setProperty("--x-offset", `${value}px`);
+  return document.body.style.setProperty("--x-offset", `${value}vw`);
 };
 
 const OnMouseMove = (event) => {
@@ -50,11 +50,11 @@ onBeforeMount(() => {
     <h1 class="tag passions">PASSIONS</h1>
 
     <transition name="fade">
-      <PassionComponent v-if="xOffsetVal < -400" />
+      <PassionComponent v-if="xOffsetVal < -200" />
     </transition>
 
     <transition name="fade">
-      <ResumeComponent v-if="xOffsetVal > 100" />
+      <ResumeComponent v-if="xOffsetVal > 200" />
     </transition>
 
     <footer>
@@ -91,10 +91,11 @@ onBeforeMount(() => {
 }
 
 .background {
-  width: calc(100vw + 1200px);
+  width: 100vw;
   height: 100vh;
   position: absolute;
-  left: clamp(-1000px, calc(-600px + var(--x-offset)), -200px);
+  transition: left 0.1s;
+  left: clamp(-20vw, var(--x-offset), 20vw);
 }
 .left,
 .right {
@@ -129,16 +130,15 @@ onBeforeMount(() => {
   margin-left: -12%;
 }
 .sign {
-  padding-left: 5%;
-  width: 45vw;
+  height: 75vh;
   position: relative;
   top: 13%;
 }
 .right .inner .sign {
-  left: -16%;
+  left: -26%;
 }
 .left .inner .sign {
-  left: 60%;
+  left: 50%;
 }
 
 .tag {
