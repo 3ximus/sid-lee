@@ -1,6 +1,8 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { onBeforeMount } from "vue";
+import IntroView from "./IntroView.vue";
+import PassionComponent from "../components/PassionComponent.vue";
 
 const MOVEMENT_ATTENUATION = 0.25;
 
@@ -44,11 +46,14 @@ onBeforeMount(() => {
     <h1 class="tag resume">RESUME</h1>
     <h1 class="tag passions">PASSIONS</h1>
 
+    <PassionComponent />
+
     <footer>
       <h1 class="footer">Move mouse to either side</h1>
     </footer>
 
     <div class="vignette"></div>
+    <IntroView></IntroView>
   </main>
 </template>
 
@@ -74,8 +79,6 @@ onBeforeMount(() => {
   bottom: 0;
   left: 50px;
   font-size: 1.5rem;
-  /* text-align: center; */
-  /* width: 100vw; */
 }
 
 .background {
@@ -133,15 +136,16 @@ onBeforeMount(() => {
   top: 45%;
   position: fixed;
   font-size: 80px;
+  font-family: kenyan-coffee;
 }
 .tag.passions {
-  right: -130px;
-  color: white;
+  right: -70px;
+  color: #bad4aa;
   transform: rotate(90deg);
 }
 .tag.resume {
-  left: -110px;
-  color: black;
+  left: -50px;
+  color: #260d04;
   transform: rotate(-90deg);
 }
 </style>
